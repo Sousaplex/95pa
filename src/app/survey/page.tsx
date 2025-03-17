@@ -71,44 +71,147 @@ const RatingSlider = ({
 
 // Define form data types
 type FormData = {
-  amenities_satisfaction?: number | null;
-  amenities_improvements?: string;
-  amenities_usage?: string[];
-  security_satisfaction?: number | null;
-  security_concerns?: string;
-  security_improvements?: string;
-  maintenance_satisfaction?: number | null;
-  maintenance_issues?: string;
-  maintenance_response_satisfaction?: number | null;
-  maintenance_common_issues?: string[];
-  maintenance_priority_areas?: string[];
-  community_interest?: 'yes' | 'maybe' | 'no';
-  community_suggestions?: string;
-  community_importance?: number | null;
-  financial_satisfaction?: number | null;
-  financial_transparency?: number | null;
-  financial_concerns?: string[];
-  financial_priorities?: string;
-  financial_reports_frequency?: 'monthly' | 'quarterly' | 'annually' | 'never';
-  communication_satisfaction?: number | null;
-  communication_preferred_method?: 'email' | 'app' | 'newsletter' | 'meetings' | 'other';
-  communication_frequency?: 'monthly' | 'quarterly' | 'annually';
-  communication_suggestions?: string;
-  projects_awareness?: 'yes' | 'somewhat' | 'no';
-  projects_satisfaction?: number | null;
-  projects_concerns?: string[];
-  projects_suggestions?: string;
-  resident_duration?: 'less_than_1' | '1_to_3' | '3_to_5' | '5_to_10' | 'more_than_10';
-  resident_status?: 'owner_occupant' | 'owner_nonresident' | 'tenant';
-  top_priorities?: string;
-  additional_comments?: string;
-  contact_name?: string;
-  contact_email?: string;
-  contact_unit?: string;
+  // Amenities
+  amenities_satisfaction: number | null;
+  amenities_improvements: string;
+  amenities_usage: string[];
+
+  // Security
+  security_satisfaction: number | null;
+  security_concerns: string;
+  security_improvements: string[];
+
+  // Concierge
+  concierge_rating: number | null;
+  concierge_improvements: string[];
+
+  // Maintenance
+  maintenance_satisfaction: number | null;
+  maintenance_issues: string;
+  maintenance_response_satisfaction: number | null;
+  maintenance_common_issues: string[];
+  maintenance_priority_areas: string[];
+
+  // Community
+  community_interest: string;
+  community_suggestions: string;
+  community_importance: number | null;
+
+  // Financial
+  financial_satisfaction: number | null;
+  financial_transparency: number | null;
+  financial_concerns: string[];
+  financial_priorities: string;
+  financial_reports_frequency: string;
+
+  // Communication
+  communication_satisfaction: number | null;
+  communication_preferred_method: string;
+  communication_frequency: string;
+  communication_suggestions: string;
+
+  // Projects
+  projects_awareness: string;
+  projects_satisfaction: number | null;
+  projects_concerns: string[];
+  projects_suggestions: string;
+
+  // Resident Status
+  resident_duration: string;
+  resident_status: string;
+  top_priorities: string;
+  additional_comments: string;
+
+  // Contact Information
+  contact_name: string;
+  contact_email: string;
+  contact_unit: string;
 };
 
+type RequiredSlider = {
+  name: string;
+  label: string;
+};
+
+type RequiredSelect = {
+  name: string;
+  label: string;
+};
+
+const requiredSliders: RequiredSlider[] = [
+  { name: 'amenities_satisfaction', label: 'Building Amenities satisfaction' },
+  { name: 'security_satisfaction', label: 'Building Safety rating' },
+  { name: 'maintenance_satisfaction', label: 'Building Maintenance rating' },
+  { name: 'maintenance_response_satisfaction', label: 'Maintenance Response satisfaction' },
+  { name: 'financial_satisfaction', label: 'Financial Management satisfaction' },
+  { name: 'financial_transparency', label: 'Financial Transparency rating' },
+  { name: 'communication_satisfaction', label: 'Board Communication satisfaction' },
+  { name: 'projects_satisfaction', label: 'Building Projects satisfaction' },
+  { name: 'community_importance', label: 'Community Building importance' }
+];
+
+const requiredSelects: RequiredSelect[] = [
+  { name: 'resident_status', label: 'Resident status' }
+];
+
 export default function SurveyPage() {
-  const [formData, setFormData] = useState<FormData>({});
+  const [formData, setFormData] = useState<FormData>({
+    // Amenities
+    amenities_satisfaction: null,
+    amenities_improvements: '',
+    amenities_usage: [],
+
+    // Security
+    security_satisfaction: null,
+    security_concerns: '',
+    security_improvements: [],
+
+    // Concierge
+    concierge_rating: null,
+    concierge_improvements: [],
+
+    // Maintenance
+    maintenance_satisfaction: null,
+    maintenance_issues: '',
+    maintenance_response_satisfaction: null,
+    maintenance_common_issues: [],
+    maintenance_priority_areas: [],
+
+    // Community
+    community_interest: '',
+    community_suggestions: '',
+    community_importance: null,
+
+    // Financial
+    financial_satisfaction: null,
+    financial_transparency: null,
+    financial_concerns: [],
+    financial_priorities: '',
+    financial_reports_frequency: '',
+
+    // Communication
+    communication_satisfaction: null,
+    communication_preferred_method: '',
+    communication_frequency: '',
+    communication_suggestions: '',
+
+    // Projects
+    projects_awareness: '',
+    projects_satisfaction: null,
+    projects_concerns: [],
+    projects_suggestions: '',
+
+    // Resident Status
+    resident_duration: '',
+    resident_status: '',
+    top_priorities: '',
+    additional_comments: '',
+
+    // Contact Information
+    contact_name: '',
+    contact_email: '',
+    contact_unit: ''
+  });
   const [submitted, setSubmitted] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
   const [validationErrors, setValidationErrors] = useState<string[]>([]);
@@ -335,22 +438,6 @@ export default function SurveyPage() {
     e.preventDefault();
     setAttemptedSubmit(true);
     
-    const requiredSliders = [
-      { name: 'amenities_satisfaction', label: 'Building Amenities satisfaction' },
-      { name: 'security_satisfaction', label: 'Building Safety rating' },
-      { name: 'maintenance_satisfaction', label: 'Building Maintenance rating' },
-      { name: 'maintenance_response_satisfaction', label: 'Maintenance Response satisfaction' },
-      { name: 'financial_satisfaction', label: 'Financial Management satisfaction' },
-      { name: 'financial_transparency', label: 'Financial Transparency rating' },
-      { name: 'communication_satisfaction', label: 'Board Communication satisfaction' },
-      { name: 'projects_satisfaction', label: 'Building Projects satisfaction' },
-      { name: 'community_importance', label: 'Community Building importance' }
-    ];
-    
-    const requiredSelects = [
-      { name: 'resident_status', label: 'Resident status' }
-    ];
-    
     const errors: string[] = [];
     const missingFields: string[] = [];
     
@@ -420,10 +507,30 @@ export default function SurveyPage() {
     }
     
     setValidationErrors([]);
-    if (isMounted) {
-      window.scrollTo(0, 0);
+    
+    try {
+      const response = await fetch('/api/survey', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.message || 'Error submitting survey');
+      }
+
+      if (isMounted) {
+        window.scrollTo(0, 0);
+      }
+      setSubmitted(true);
+    } catch (error) {
+      console.error('Error submitting survey:', error);
+      setValidationErrors(['There was an error submitting your survey. Please try again.']);
     }
-    setSubmitted(true);
   };
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -465,15 +572,13 @@ export default function SurveyPage() {
   };
 
   const shouldShowError = (fieldName: string) => {
-    if (!attemptedSubmit) {
-      return false;
+    if (!attemptedSubmit) return false;
+    
+    if (requiredSliders.some(slider => slider.name === fieldName)) {
+      return formData[fieldName as keyof FormData] === null;
     }
     
-    if (fieldName.includes('satisfaction') || fieldName.includes('importance')) {
-      return formData[fieldName as keyof FormData] === null || formData[fieldName as keyof FormData] === undefined;
-    }
-    
-    if (fieldName === 'resident_status') {
+    if (requiredSelects.some(select => select.name === fieldName)) {
       return !formData[fieldName as keyof FormData];
     }
     
@@ -710,7 +815,7 @@ export default function SurveyPage() {
                 </div>
                 
                 <div className="space-y-6">
-                  <h3 className="text-2xl font-semibold mb-4 pb-2 border-b">Security & Safety</h3>
+                  <h3 className="text-2xl font-semibold mb-4 pb-2 border-b">Security, Safety & Concierge Services</h3>
                   
                   <div>
                     <label className="block text-lg question-label">
@@ -724,6 +829,24 @@ export default function SurveyPage() {
                         leftLabel="Not Safe"
                         middleLabel="Somewhat Safe"
                         rightLabel="Very Safe"
+                        required={true}
+                        showValidation={attemptedSubmit}
+                      />
+                    </div>
+                  </div>
+                  
+                  <div>
+                    <label className="block text-lg question-label">
+                      How satisfied are you with the concierge service? <span className="text-red-500">*</span>
+                    </label>
+                    <div className={`answer-container ${getQuestionClass('concierge_rating')}`}>
+                      <RatingSlider 
+                        name="concierge_rating" 
+                        value={formData.concierge_rating === undefined ? null : formData.concierge_rating} 
+                        onChange={handleInputChange}
+                        leftLabel="Very Dissatisfied"
+                        middleLabel="Neutral"
+                        rightLabel="Very Satisfied"
                         required={true}
                         showValidation={attemptedSubmit}
                       />
@@ -745,133 +868,241 @@ export default function SurveyPage() {
                       ></textarea>
                     </div>
                   </div>
+                  
+                  <div className="mb-8">
+                    <label className="block text-lg question-label">
+                      What aspects of the concierge service could be improved? (Select all that apply)
+                    </label>
+                    <div className="answer-container">
+                      <div className="space-y-3">
+                        <div className="flex items-center">
+                          <input 
+                            type="checkbox" 
+                            id="response_time" 
+                            name="concierge_improvements" 
+                            value="Response time to requests"
+                            checked={(formData.concierge_improvements || []).includes('Response time to requests')}
+                            onChange={handleCheckboxChange}
+                            className="h-6 w-6 mr-3 accent-blue-500" 
+                          />
+                          <label htmlFor="response_time" className="text-lg">Response time to requests</label>
+                        </div>
+                        <div className="flex items-center">
+                          <input 
+                            type="checkbox" 
+                            id="friendliness" 
+                            name="concierge_improvements" 
+                            value="Friendliness and professionalism"
+                            checked={(formData.concierge_improvements || []).includes('Friendliness and professionalism')}
+                            onChange={handleCheckboxChange}
+                            className="h-6 w-6 mr-3 accent-blue-500" 
+                          />
+                          <label htmlFor="friendliness" className="text-lg">Friendliness and professionalism</label>
+                        </div>
+                        <div className="flex items-center">
+                          <input 
+                            type="checkbox" 
+                            id="package_handling" 
+                            name="concierge_improvements" 
+                            value="Package handling"
+                            checked={(formData.concierge_improvements || []).includes('Package handling')}
+                            onChange={handleCheckboxChange}
+                            className="h-6 w-6 mr-3 accent-blue-500" 
+                          />
+                          <label htmlFor="package_handling" className="text-lg">Package handling</label>
+                        </div>
+                        <div className="flex items-center">
+                          <input 
+                            type="checkbox" 
+                            id="visitor_management" 
+                            name="concierge_improvements" 
+                            value="Visitor management"
+                            checked={(formData.concierge_improvements || []).includes('Visitor management')}
+                            onChange={handleCheckboxChange}
+                            className="h-6 w-6 mr-3 accent-blue-500" 
+                          />
+                          <label htmlFor="visitor_management" className="text-lg">Visitor management</label>
+                        </div>
+                        <div className="flex items-center">
+                          <input 
+                            type="checkbox" 
+                            id="building_info" 
+                            name="concierge_improvements" 
+                            value="Building information provided"
+                            checked={(formData.concierge_improvements || []).includes('Building information provided')}
+                            onChange={handleCheckboxChange}
+                            className="h-6 w-6 mr-3 accent-blue-500" 
+                          />
+                          <label htmlFor="building_info" className="text-lg">Building information provided</label>
+                        </div>
+                        <div className="flex items-center">
+                          <input 
+                            type="checkbox" 
+                            id="emergency_response" 
+                            name="concierge_improvements" 
+                            value="Emergency response"
+                            checked={(formData.concierge_improvements || []).includes('Emergency response')}
+                            onChange={handleCheckboxChange}
+                            className="h-6 w-6 mr-3 accent-blue-500" 
+                          />
+                          <label htmlFor="emergency_response" className="text-lg">Emergency response</label>
+                        </div>
+                        <div className="flex items-center">
+                          <input 
+                            type="checkbox" 
+                            id="concierge_other" 
+                            name="concierge_improvements" 
+                            value="Other"
+                            checked={(formData.concierge_improvements || []).includes('Other')}
+                            onChange={handleCheckboxChange}
+                            className="h-6 w-6 mr-3 accent-blue-500" 
+                          />
+                          <label htmlFor="concierge_other" className="text-lg">Other</label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
                 
                 <div className="space-y-6">
-                  <h3 className="text-2xl font-semibold mb-4 pb-2 border-b">Maintenance & Repairs</h3>
+                  <h3 className="text-2xl font-semibold mb-4 pb-2 border-b">Building Maintenance</h3>
                   
                   <div>
                     <label className="block text-lg question-label">
-                      How would you rate the overall maintenance of our building? <span className="text-red-500">*</span>
+                      How satisfied are you with our building maintenance? <span className="text-red-500">*</span>
                     </label>
                     <div className={`answer-container ${getQuestionClass('maintenance_satisfaction')}`}>
                       <RatingSlider 
                         name="maintenance_satisfaction" 
                         value={formData.maintenance_satisfaction === undefined ? null : formData.maintenance_satisfaction} 
                         onChange={handleInputChange}
-                        leftLabel="Poor"
-                        middleLabel="Adequate"
-                        rightLabel="Excellent"
+                        leftLabel="Very Dissatisfied"
+                        middleLabel="Neutral"
+                        rightLabel="Very Satisfied"
                         required={true}
                         showValidation={attemptedSubmit}
                       />
                     </div>
                   </div>
-                  
-                  <div className="mb-8">
+
+                  <div>
                     <label className="block text-lg question-label">
-                      How satisfied are you with response times to maintenance requests? <span className="text-red-500">*</span>
+                      How satisfied are you with maintenance response times? <span className="text-red-500">*</span>
                     </label>
-                    <RatingSlider 
-                      name="maintenance_response_satisfaction" 
-                      value={formData.maintenance_response_satisfaction === undefined ? null : formData.maintenance_response_satisfaction} 
-                      onChange={handleInputChange} 
-                      leftLabel="Very Slow"
-                      middleLabel="Acceptable"
-                      rightLabel="Very Fast"
-                      required={true}
-                      showValidation={attemptedSubmit}
-                    />
+                    <div className={`answer-container ${getQuestionClass('maintenance_response_satisfaction')}`}>
+                      <RatingSlider 
+                        name="maintenance_response_satisfaction" 
+                        value={formData.maintenance_response_satisfaction === undefined ? null : formData.maintenance_response_satisfaction} 
+                        onChange={handleInputChange}
+                        leftLabel="Very Dissatisfied"
+                        middleLabel="Neutral"
+                        rightLabel="Very Satisfied"
+                        required={true}
+                        showValidation={attemptedSubmit}
+                      />
+                    </div>
                   </div>
-                  
-                  <div className="mb-8">
+
+                  <div className="mb-6">
                     <label className="block text-lg question-label">
-                      Which common maintenance issues have you noticed? (Select all that apply)
+                      What maintenance issues have you experienced? (Select all that apply)
                     </label>
                     <div className="answer-container">
                       <div className="space-y-3">
                         <div className="flex items-center">
                           <input 
                             type="checkbox" 
-                            id="elevators" 
+                            id="elevator_issues" 
                             name="maintenance_common_issues" 
-                            value="elevators"
-                            checked={(formData.maintenance_common_issues || []).includes('elevators')}
+                            value="elevator_issues"
+                            checked={(formData.maintenance_common_issues || []).includes('elevator_issues')}
                             onChange={handleCheckboxChange}
                             className="h-6 w-6 mr-3 accent-blue-500" 
                           />
-                          <label htmlFor="elevators" className="text-lg">Elevator Issues</label>
+                          <label htmlFor="elevator_issues" className="text-lg">Elevator Issues</label>
                         </div>
                         <div className="flex items-center">
                           <input 
                             type="checkbox" 
-                            id="hvac" 
+                            id="hvac_issues" 
                             name="maintenance_common_issues" 
-                            value="hvac"
-                            checked={(formData.maintenance_common_issues || []).includes('hvac')}
+                            value="hvac_issues"
+                            checked={(formData.maintenance_common_issues || []).includes('hvac_issues')}
                             onChange={handleCheckboxChange}
                             className="h-6 w-6 mr-3 accent-blue-500" 
                           />
-                          <label htmlFor="hvac" className="text-lg">Heating/Cooling System Issues</label>
+                          <label htmlFor="hvac_issues" className="text-lg">HVAC Issues</label>
                         </div>
                         <div className="flex items-center">
                           <input 
                             type="checkbox" 
-                            id="plumbing" 
+                            id="plumbing_issues" 
                             name="maintenance_common_issues" 
-                            value="plumbing"
-                            checked={(formData.maintenance_common_issues || []).includes('plumbing')}
+                            value="plumbing_issues"
+                            checked={(formData.maintenance_common_issues || []).includes('plumbing_issues')}
                             onChange={handleCheckboxChange}
                             className="h-6 w-6 mr-3 accent-blue-500" 
                           />
-                          <label htmlFor="plumbing" className="text-lg">Plumbing Issues</label>
+                          <label htmlFor="plumbing_issues" className="text-lg">Plumbing Issues</label>
                         </div>
                         <div className="flex items-center">
                           <input 
                             type="checkbox" 
-                            id="lighting" 
+                            id="lighting_issues" 
                             name="maintenance_common_issues" 
-                            value="lighting"
-                            checked={(formData.maintenance_common_issues || []).includes('lighting')}
+                            value="lighting_issues"
+                            checked={(formData.maintenance_common_issues || []).includes('lighting_issues')}
                             onChange={handleCheckboxChange}
                             className="h-6 w-6 mr-3 accent-blue-500" 
                           />
-                          <label htmlFor="lighting" className="text-lg">Lighting/Electrical Issues</label>
+                          <label htmlFor="lighting_issues" className="text-lg">Lighting/Electrical Issues</label>
                         </div>
                         <div className="flex items-center">
                           <input 
                             type="checkbox" 
-                            id="cleanliness" 
+                            id="cleanliness_issues" 
                             name="maintenance_common_issues" 
-                            value="cleanliness"
-                            checked={(formData.maintenance_common_issues || []).includes('cleanliness')}
+                            value="cleanliness_issues"
+                            checked={(formData.maintenance_common_issues || []).includes('cleanliness_issues')}
                             onChange={handleCheckboxChange}
                             className="h-6 w-6 mr-3 accent-blue-500" 
                           />
-                          <label htmlFor="cleanliness" className="text-lg">Cleanliness Issues</label>
+                          <label htmlFor="cleanliness_issues" className="text-lg">Cleanliness Issues</label>
                         </div>
                         <div className="flex items-center">
                           <input 
                             type="checkbox" 
-                            id="door_access" 
+                            id="door_access_issues" 
                             name="maintenance_common_issues" 
-                            value="door_access"
-                            checked={(formData.maintenance_common_issues || []).includes('door_access')}
+                            value="door_access_issues"
+                            checked={(formData.maintenance_common_issues || []).includes('door_access_issues')}
                             onChange={handleCheckboxChange}
                             className="h-6 w-6 mr-3 accent-blue-500" 
                           />
-                          <label htmlFor="door_access" className="text-lg">Door/Access Control Issues</label>
+                          <label htmlFor="door_access_issues" className="text-lg">Door/Access Control Issues</label>
                         </div>
                       </div>
                     </div>
                   </div>
-                  
-                  <div className="mb-8">
+
+                  <div className="mb-6">
                     <label className="block text-lg question-label">
-                      Which areas need maintenance priority? (Select all that apply)
+                      Which areas need maintenance attention? (Select all that apply)
                     </label>
                     <div className="answer-container">
                       <div className="space-y-3">
+                        <div className="flex items-center">
+                          <input 
+                            type="checkbox" 
+                            id="lobby" 
+                            name="maintenance_priority_areas" 
+                            value="lobby"
+                            checked={(formData.maintenance_priority_areas || []).includes('lobby')}
+                            onChange={handleCheckboxChange}
+                            className="h-6 w-6 mr-3 accent-blue-500" 
+                          />
+                          <label htmlFor="lobby" className="text-lg">Lobby</label>
+                        </div>
                         <div className="flex items-center">
                           <input 
                             type="checkbox" 
@@ -882,31 +1113,19 @@ export default function SurveyPage() {
                             onChange={handleCheckboxChange}
                             className="h-6 w-6 mr-3 accent-blue-500" 
                           />
-                          <label htmlFor="hallways" className="text-lg">Hallways/Common Areas</label>
+                          <label htmlFor="hallways" className="text-lg">Hallways</label>
                         </div>
                         <div className="flex items-center">
                           <input 
                             type="checkbox" 
-                            id="lobby_area" 
+                            id="elevators" 
                             name="maintenance_priority_areas" 
-                            value="lobby_area"
-                            checked={(formData.maintenance_priority_areas || []).includes('lobby_area')}
+                            value="elevators"
+                            checked={(formData.maintenance_priority_areas || []).includes('elevators')}
                             onChange={handleCheckboxChange}
                             className="h-6 w-6 mr-3 accent-blue-500" 
                           />
-                          <label htmlFor="lobby_area" className="text-lg">Lobby</label>
-                        </div>
-                        <div className="flex items-center">
-                          <input 
-                            type="checkbox" 
-                            id="exterior" 
-                            name="maintenance_priority_areas" 
-                            value="exterior"
-                            checked={(formData.maintenance_priority_areas || []).includes('exterior')}
-                            onChange={handleCheckboxChange}
-                            className="h-6 w-6 mr-3 accent-blue-500" 
-                          />
-                          <label htmlFor="exterior" className="text-lg">Building Exterior</label>
+                          <label htmlFor="elevators" className="text-lg">Elevators</label>
                         </div>
                         <div className="flex items-center">
                           <input 
@@ -918,50 +1137,36 @@ export default function SurveyPage() {
                             onChange={handleCheckboxChange}
                             className="h-6 w-6 mr-3 accent-blue-500" 
                           />
-                          <label htmlFor="parking" className="text-lg">Parking Areas</label>
+                          <label htmlFor="parking" className="text-lg">Parking</label>
                         </div>
                         <div className="flex items-center">
                           <input 
                             type="checkbox" 
-                            id="roof" 
+                            id="common_areas" 
                             name="maintenance_priority_areas" 
-                            value="roof"
-                            checked={(formData.maintenance_priority_areas || []).includes('roof')}
+                            value="common_areas"
+                            checked={(formData.maintenance_priority_areas || []).includes('common_areas')}
                             onChange={handleCheckboxChange}
                             className="h-6 w-6 mr-3 accent-blue-500" 
                           />
-                          <label htmlFor="roof" className="text-lg">Rooftop Areas</label>
-                        </div>
-                        <div className="flex items-center">
-                          <input 
-                            type="checkbox" 
-                            id="amenity_spaces" 
-                            name="maintenance_priority_areas" 
-                            value="amenity_spaces"
-                            checked={(formData.maintenance_priority_areas || []).includes('amenity_spaces')}
-                            onChange={handleCheckboxChange}
-                            className="h-6 w-6 mr-3 accent-blue-500" 
-                          />
-                          <label htmlFor="amenity_spaces" className="text-lg">Party Room/Amenity Spaces</label>
+                          <label htmlFor="common_areas" className="text-lg">Common Areas</label>
                         </div>
                       </div>
                     </div>
                   </div>
-                  
-                  <div className="mb-8">
+
+                  <div className="mb-6">
                     <label className="block text-lg question-label">
-                      What maintenance issues need to be addressed?
+                      Please describe any specific maintenance issues you've experienced:
                     </label>
-                    <div className="answer-container">
-                      <textarea 
-                        className="w-full p-3 text-lg border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        rows={4}
-                        name="maintenance_issues"
-                        value={formData.maintenance_issues || ''}
-                        onChange={handleInputChange}
-                        placeholder="Please share any maintenance concerns..."
-                      ></textarea>
-                    </div>
+                    <textarea 
+                      className="w-full p-3 text-lg border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      rows={4}
+                      name="maintenance_issues"
+                      value={formData.maintenance_issues || ''}
+                      onChange={handleInputChange}
+                      placeholder="Please describe any maintenance issues..."
+                    ></textarea>
                   </div>
                 </div>
                 

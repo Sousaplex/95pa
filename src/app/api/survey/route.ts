@@ -1,43 +1,54 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { supabase } from '@/app/utils/supabase';
 
-// In a real app, this would connect to a database
-// For now, we'll store submissions in memory
-const surveySubmissions: any[] = [];
-
-export async function POST(request: NextRequest) {
+export async function POST(request: Request) {
   try {
     const data = await request.json();
-    
-    // Add timestamp
-    const submission = {
-      ...data,
-      timestamp: new Date().toISOString(),
-      building: '95 Prince Arthur Ave'
-    };
-    
-    // Store the submission
-    surveySubmissions.push(submission);
-    
-    // Log for development purposes only
-    console.log('Survey submission received:', submission);
-    
-    return NextResponse.json({ 
-      message: 'Thank you for your feedback! Your input will help improve 95 Prince Arthur.',
-      success: true
-    });
+    console.log('Raw incoming data:', data);
+    console.log('Data type:', typeof data);
+    console.log('Data keys:', Object.keys(data));
+
+    // Insert the data directly without field name conversion
+    const { error } = await supabase
+      .from('survey_submissions')
+      .insert([{
+        ...data,
+        building: '95 Prince Arthur Ave'
+      }]);
+
+    if (error) {
+      console.error('Supabase error:', error);
+      return NextResponse.json(
+        { message: 'Error submitting survey' },
+        { status: 500 }
+      );
+    }
+
+    return NextResponse.json({ message: 'Survey submitted successfully' });
   } catch (error) {
     console.error('Error processing survey submission:', error);
-    return NextResponse.json({ 
-      message: 'There was an error submitting your feedback. Please try again.',
-      success: false 
-    }, { status: 500 });
+    return NextResponse.json(
+      { message: 'Error submitting survey' },
+      { status: 500 }
+    );
   }
 }
 
 export async function GET() {
-  // Note: In production, this endpoint would be protected
-  return NextResponse.json({ 
-    count: surveySubmissions.length,
-    submissions: surveySubmissions 
-  });
+  try {
+    const { data, error } = await supabase
+      .from('survey_submissions')
+      .select('*')
+      .order('created_at', { ascending: false });
+
+    if (error) throw error;
+
+    return NextResponse.json({ submissions: data });
+  } catch (error) {
+    console.error('Error fetching survey submissions:', error);
+    return NextResponse.json({ 
+      message: 'Error fetching survey submissions',
+      success: false 
+    }, { status: 500 });
+  }
 } 

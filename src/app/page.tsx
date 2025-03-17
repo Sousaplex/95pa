@@ -10,11 +10,8 @@ export default function Home() {
         
         <div className="bg-white rounded-lg shadow-xl p-6 md:p-8 mb-8">
           <h2 className="text-3xl font-semibold mb-4">Help Shape Our Condo's Future</h2>
-          <p className="text-lg text-gray-600 mb-4">
-            Hi, I'm Michael Sousa, your neighbor at 95 Prince Arthur Ave. and I'm running for the board at our upcoming AGM in May.
-          </p>
           <p className="text-lg text-gray-600 mb-6">
-            I need your feedback on what matters most to you. Your input will directly shape my priorities if elected to bring responsible spending, better project management, and increased transparency.
+          As the 2025 AGM is approaching in a few months, your feedback about what matters most will directly shape priorities for new board members. Like any good condo board, bringing together responsible spending, best practices in project management, and increasing transparency to residents should be top priorities. A well-run condo benefits everyone—enhancing property values, improving quality of life, and ensuring smooth operations. Your voice counts!
           </p>
           
           <div className="bg-blue-50 border-l-4 border-blue-500 p-4 mb-6">
@@ -33,36 +30,10 @@ export default function Home() {
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
           <div className="bg-white rounded-lg shadow-lg p-6">
-            <h3 className="text-2xl font-semibold mb-3">Why I'm Running</h3>
+            <h3 className="text-2xl font-semibold mb-3">Why A Survey?</h3>
             <p className="text-lg text-gray-600 mb-4">
-              I co-founded SingleKey, a company that helps protect landlords and tenants, and have experience sitting on multiple boards. I'm running to:
+            While the AGM date hasn't been announced yet, we want to be ready with our community's input when it happens. By sharing your views through this survey, you're helping ensure that all residents' voices are heard when important decisions are made.
             </p>
-            <ul className="space-y-3 text-lg text-gray-600">
-              <li className="flex items-start">
-                <svg className="h-6 w-6 text-green-500 mr-2 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                </svg>
-                Ensure money is spent responsibly
-              </li>
-              <li className="flex items-start">
-                <svg className="h-6 w-6 text-green-500 mr-2 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                </svg>
-                Protect and enhance our property values
-              </li>
-              <li className="flex items-start">
-                <svg className="h-6 w-6 text-green-500 mr-2 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                </svg>
-                Improve project management and delivery
-              </li>
-              <li className="flex items-start">
-                <svg className="h-6 w-6 text-green-500 mr-2 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                </svg>
-                Increase transparency with all unitholders
-              </li>
-            </ul>
           </div>
           
           <div className="bg-white rounded-lg shadow-lg p-6">
@@ -71,12 +42,9 @@ export default function Home() {
               <p>
                 Since the last AGM, I've been disappointed by the lack of progress on key initiatives like the rooftop project. Many promised improvements seem stalled with no updates provided to residents.
               </p>
-              <p className="font-medium">
-                This website demonstrates my commitment to transparency and my seriousness about making real changes if elected.
-              </p>
               <div className="bg-yellow-50 p-3 rounded-md mt-2">
                 <p className="text-base text-yellow-800">
-                  Survey results will be shared with all residents before the AGM in May.
+                  Survey results will be shared with all residents in May sometime before the AGM.
                 </p>
               </div>
             </div>
@@ -111,12 +79,6 @@ export default function Home() {
         
         <div className="text-center">
           <div className="flex flex-wrap justify-center gap-4">
-            <Link 
-              href="/about" 
-              className="inline-block bg-gray-100 hover:bg-gray-200 text-gray-800 font-medium py-3 px-6 rounded-lg transition-colors text-lg"
-            >
-              About Me
-            </Link>
             <Link 
               href="/survey-results" 
               className="inline-block bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-6 rounded-lg transition-colors text-lg"
