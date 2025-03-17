@@ -118,10 +118,7 @@ export default function AdminDashboard() {
       'Financial Rating',
       'Communication Rating',
       'Projects Rating',
-      'Community Importance',
-      'Unit',
-      'Name',
-      'Email'
+      'Community Importance'
     ];
 
     const csvData = getSortedData().map(item => [
@@ -133,10 +130,7 @@ export default function AdminDashboard() {
       item.financial_satisfaction,
       item.communication_satisfaction,
       item.projects_satisfaction,
-      item.community_importance,
-      item.contact_unit || '',
-      item.contact_name || '',
-      item.contact_email || ''
+      item.community_importance
     ]);
 
     const csvContent = [
