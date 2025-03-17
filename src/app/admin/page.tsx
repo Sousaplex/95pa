@@ -12,9 +12,6 @@ interface SurveySubmission {
   projects_satisfaction: number;
   community_importance: number;
   resident_status: string;
-  contact_name?: string;
-  contact_email?: string;
-  contact_unit?: string;
   created_at: string;
 }
 
@@ -207,6 +204,59 @@ export default function AdminDashboard() {
 
   const averages = calculateAverages();
 
+  const renderTable = () => {
+    const filteredData = surveyData.filter(submission => {
+      if (filterStatus === 'all') return true;
+      return submission.resident_status === filterStatus;
+    });
+
+    const sortedData = [...filteredData].sort((a, b) => {
+      if (sortDirection === 'asc') {
+        return a[sortField] > b[sortField] ? 1 : -1;
+      }
+      return a[sortField] < b[sortField] ? 1 : -1;
+    });
+
+    return (
+      <div className="overflow-x-auto">
+        <table className="min-w-full bg-white border border-gray-300">
+          <thead>
+            <tr className="bg-gray-100">
+              <th className="px-6 py-3 border-b text-left text-sm font-semibold text-gray-600">ID</th>
+              <th className="px-6 py-3 border-b text-left text-sm font-semibold text-gray-600">Amenities</th>
+              <th className="px-6 py-3 border-b text-left text-sm font-semibold text-gray-600">Security</th>
+              <th className="px-6 py-3 border-b text-left text-sm font-semibold text-gray-600">Maintenance</th>
+              <th className="px-6 py-3 border-b text-left text-sm font-semibold text-gray-600">Financial</th>
+              <th className="px-6 py-3 border-b text-left text-sm font-semibold text-gray-600">Communication</th>
+              <th className="px-6 py-3 border-b text-left text-sm font-semibold text-gray-600">Projects</th>
+              <th className="px-6 py-3 border-b text-left text-sm font-semibold text-gray-600">Community</th>
+              <th className="px-6 py-3 border-b text-left text-sm font-semibold text-gray-600">Status</th>
+              <th className="px-6 py-3 border-b text-left text-sm font-semibold text-gray-600">Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            {sortedData.map((submission) => (
+              <tr key={submission.id} className="hover:bg-gray-50">
+                <td className="px-6 py-4 border-b text-sm text-gray-900">{submission.id}</td>
+                <td className="px-6 py-4 border-b text-sm text-gray-900">{submission.amenities_satisfaction}</td>
+                <td className="px-6 py-4 border-b text-sm text-gray-900">{submission.security_satisfaction}</td>
+                <td className="px-6 py-4 border-b text-sm text-gray-900">{submission.maintenance_satisfaction}</td>
+                <td className="px-6 py-4 border-b text-sm text-gray-900">{submission.financial_satisfaction}</td>
+                <td className="px-6 py-4 border-b text-sm text-gray-900">{submission.communication_satisfaction}</td>
+                <td className="px-6 py-4 border-b text-sm text-gray-900">{submission.projects_satisfaction}</td>
+                <td className="px-6 py-4 border-b text-sm text-gray-900">{submission.community_importance}</td>
+                <td className="px-6 py-4 border-b text-sm text-gray-900">{submission.resident_status}</td>
+                <td className="px-6 py-4 border-b text-sm text-gray-900">
+                  {new Date(submission.created_at).toLocaleDateString()}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    );
+  };
+
   return (
     <main className="flex min-h-screen flex-col items-center p-6">
       <div className="max-w-7xl w-full">
@@ -283,67 +333,7 @@ export default function AdminDashboard() {
               <p className="text-gray-600">No survey responses yet.</p>
             </div>
           ) : (
-            <div className="overflow-x-auto">
-              <table className="min-w-full divide-y divide-gray-200">
-                <thead className="bg-gray-50">
-                  <tr>
-                    <th 
-                      scope="col" 
-                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100"
-                      onClick={() => handleSort('created_at')}
-                    >
-                      Date {sortField === 'created_at' && (sortDirection === 'asc' ? '↑' : '↓')}
-                    </th>
-                    <th 
-                      scope="col" 
-                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100"
-                      onClick={() => handleSort('resident_status')}
-                    >
-                      Status {sortField === 'resident_status' && (sortDirection === 'asc' ? '↑' : '↓')}
-                    </th>
-                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Ratings
-                    </th>
-                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Contact
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className="bg-white divide-y divide-gray-200">
-                  {getSortedData().map((item, index) => (
-                    <tr key={item.id} className={index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                        {new Date(item.created_at).toLocaleDateString()}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 capitalize">
-                        {item.resident_status.replace(/_/g, ' ')}
-                      </td>
-                      <td className="px-6 py-4 text-sm text-gray-500">
-                        <div className="space-y-1">
-                          <p>Amenities: {item.amenities_satisfaction}/5</p>
-                          <p>Security: {item.security_satisfaction}/5</p>
-                          <p>Maintenance: {item.maintenance_satisfaction}/5</p>
-                          <p>Financial: {item.financial_satisfaction}/5</p>
-                          <p>Communication: {item.communication_satisfaction}/5</p>
-                          <p>Projects: {item.projects_satisfaction}/5</p>
-                        </div>
-                      </td>
-                      <td className="px-6 py-4 text-sm text-gray-500">
-                        {item.contact_name && (
-                          <p><span className="font-medium">Name:</span> {item.contact_name}</p>
-                        )}
-                        {item.contact_unit && (
-                          <p><span className="font-medium">Unit:</span> {item.contact_unit}</p>
-                        )}
-                        {item.contact_email && (
-                          <p><span className="font-medium">Email:</span> {item.contact_email}</p>
-                        )}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+            renderTable()
           )}
         </div>
       </div>
